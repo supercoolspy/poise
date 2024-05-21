@@ -49,9 +49,9 @@ impl<U, E> Framework<U, E> {
 
     /// Setup a new [`Framework`].
     pub fn new(options: crate::FrameworkOptions<U, E>) -> Self
-    where
-        U: Send + Sync + 'static + 'static,
-        E: Send + 'static,
+        where
+            U: Send + Sync + 'static + 'static,
+            E: Send + 'static,
     {
         Self {
             bot_id: std::sync::OnceLock::new(),
@@ -126,7 +126,7 @@ async fn raw_dispatch_event<U, E>(
     }
 
     #[cfg(not(feature = "cache"))]
-    let bot_id = *framework
+        let bot_id = *framework
         .bot_id
         .get()
         .expect("bot ID not set even though we awaited Ready");
@@ -184,11 +184,7 @@ pub async fn insert_owners_from_http(
 
     if let Some(team) = application_info.team {
         for member in team.members {
-            // This `if` currently always evaluates to true but it becomes important once
-            // Discord implements more team roles than Admin
-            if member.permissions.iter().any(|p| p == "*") {
-                owners.insert(member.user.id);
-            }
+            owners.insert(member.user.id);
         }
     }
 
